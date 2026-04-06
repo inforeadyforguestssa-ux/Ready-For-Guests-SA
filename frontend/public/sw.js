@@ -2,9 +2,7 @@ const CACHE_NAME = 'ready-for-guests-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/static/js/main.js',
-  '/static/css/main.css'
-];
+  ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -19,3 +17,4 @@ self.addEventListener('fetch', event => {
       .then(response => response || fetch(event.request))
   );
 });
+
