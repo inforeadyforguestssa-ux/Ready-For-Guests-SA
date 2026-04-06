@@ -1,0 +1,120 @@
+{
+  "theme": "Light",
+  "archetype": "Archetype 1 (Organic & Earthy) blended with Coastal Premium",
+  "reasoning": "The application serves high-end Airbnb and holiday home owners on the Hibiscus Coast. The light theme with warm beige and cream provides trust and cleanliness, while the deep teal and gold accents deliver a premium, 'Taksi-app-like' modern technological feel.",
+  "colors": {
+    "primary": {
+      "DEFAULT": "#0D7377",
+      "hover": "#14919B",
+      "foreground": "#FFFFFF"
+    },
+    "secondary": {
+      "DEFAULT": "#F5E6D3",
+      "hover": "#E6D5BE",
+      "foreground": "#0D7377"
+    },
+    "accent": {
+      "DEFAULT": "#D4AF37",
+      "hover": "#B5952F",
+      "foreground": "#FFFFFF"
+    },
+    "background": "#FAFAF7",
+    "surface": "#FFFFFF",
+    "text": {
+      "primary": "#0A2A2B",
+      "muted": "#4A6B6C",
+      "inverse": "#FFFFFF"
+    },
+    "border": "#E5E0D8"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Outfit, sans-serif",
+      "body": "Manrope, sans-serif"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight",
+      "h3": "text-xl sm:text-2xl font-medium",
+      "h4": "text-lg sm:text-xl font-medium",
+      "body": "text-base leading-relaxed",
+      "label": "text-xs font-bold uppercase tracking-[0.2em]"
+    },
+    "rules": [
+      "No generic fonts like Inter or Roboto for headings.",
+      "Always use tight letter spacing (tracking-tight) for large headings.",
+      "Overlines and labels must be uppercase with wide spacing (tracking-[0.2em])."
+    ]
+  },
+  "spacing_and_layout": {
+    "generous_spacing": true,
+    "container_padding": "px-6 md:px-12 lg:px-24",
+    "section_gap": "py-20 lg:py-32",
+    "grid_strategies": {
+      "marketing": "grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12",
+      "dashboard": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    },
+    "rules": [
+      "Use 'Bento' Grid Protocol for the Admin/Team dashboards to maximize screen real estate.",
+      "Marketing pages must feature asymmetrical layouts.",
+      "Containers with borders must have generous internal padding (p-6 or p-8)."
+    ]
+  },
+  "surface_strategies": {
+    "headers": "Glassmorphism with optical clarity: backdrop-blur-xl bg-white/70 border-b border-white/40 shadow-sm.",
+    "cards_marketing": "Neumorphism mix: soft shadow with a crisp 1px border (border-black/5) to ground it.",
+    "cards_dashboard": "Flat background with 1px subtle border (border-border), rounded-xl. On hover: -translate-y-1 shadow-lg.",
+    "radius": "rounded-2xl for main containers, rounded-full for buttons (matching modern app aesthetics like Taksi)."
+  },
+  "components": {
+    "buttons": "rounded-full px-8 py-3 font-medium transition-all duration-200. Primary buttons use Teal (#0D7377), Secondary use Beige.",
+    "inputs": "Shadcn components heavily customized: rounded-xl border-border/50 bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary.",
+    "cards": "Avoid Shadcn Card default if it looks too rigid. Build custom bento divs for dashboards with rounded-2xl.",
+    "icons": "Use @phosphor-icons/react (Duotone or Regular weight). Install via: yarn add @phosphor-icons/react"
+  },
+  "animations": {
+    "library": "framer-motion",
+    "page_transitions": "Fade in with slight upward translation (y: 20 -> 0, opacity: 0 -> 1).",
+    "hover_states": "Buttons and cards must elevate slightly and adjust shadow.",
+    "scrolling": "Use lenis for smooth momentum scrolling on marketing sections."
+  },
+  "media": {
+    "hero_image": {
+      "url": "https://customer-assets.emergentagent.com/job_guest-ready-connect/artifacts/nkyi7qj0_WhatsApp%20Image%202026-04-05%20at%208.07.29%20PM.jpeg",
+      "description": "Brand hero image for the landing page face.",
+      "overlay_strategy": "Gradient overlay bg-gradient-to-r from-black/60 via-black/30 to-transparent to ensure text readability while maintaining image visibility."
+    },
+    "gallery": [
+      {
+        "url": "https://images.unsplash.com/photo-1760067538612-c0ecd3bc3d3a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cmlvdXMlMjBiZWFjaCUyMGhvdXNlJTIwbGl2aW5nJTIwcm9vbXxlbnwwfHx8fDE3NzU0MDkzNjN8MA&ixlib=rb-4.1.0&q=85",
+        "category": "living_room",
+        "description": "Luxurious beach house living room"
+      },
+      {
+        "url": "https://images.pexels.com/photos/3758499/pexels-photo-3758499.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "category": "bathroom",
+        "description": "Premium bright clean bathroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1760067537723-bb12d2674e15?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwxfHxjb2FzdGFsJTIwZWxlZ2FudCUyMGJlZHJvb218ZW58MHx8fHwxNzc1NDA5MzYzfDA&ixlib=rb-4.1.0&q=85",
+        "category": "bedroom",
+        "description": "Coastal elegant bedroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1766430956209-72d1c28a16ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkaW5pbmclMjByb29tJTIwY29hc3RhbHxlbnwwfHx8fDE3NzU0MDkzNjN8MA&ixlib=rb-4.1.0&q=85",
+        "category": "dining_room",
+        "description": "Modern coastal dining room"
+      }
+    ],
+    "rules": "All images MUST be used. Do not use any placeholder images."
+  },
+  "instructions_to_main_agent": [
+    "Install required dependencies: yarn add @phosphor-icons/react framer-motion clsx tailwind-merge",
+    "Setup Google Fonts for 'Outfit' and 'Manrope'.",
+    "CRITICAL: All interactive and key informational elements MUST include a 'data-testid' attribute (e.g., data-testid='navigate-app-button').",
+    "Build a 'Navigate to App' button directly on the hero section.",
+    "Implement the three dashboards (Client, Team, Admin) using the 'Bento' Grid Protocol.",
+    "Do not use generic fully centered layouts; prioritize asymmetrical tension in the marketing sections.",
+    "Ensure contrast ratios meet APCA/WCAG standards, especially with the teal and white combinations."
+  ]
+}
