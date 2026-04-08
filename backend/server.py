@@ -226,12 +226,13 @@ async def register(user_data: UserRegister):
     response = JSONResponse(content={
         "id": user_id,
         "email": email,
-        "name": user_data.name,
-        "phone": user_data.phone,
-        "role": user_doc["role"],
-        "created_at": user_doc["created_at"]
+        "name": user["name"],
+        "phone": user.get("phone", ""),
+        "role": user["role"],
+        "created_at": user.get("created_at", ""),
+        "access_token": access_token
     })
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none", max_age=3600, path="/")
+    
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, secure=True, samesite="none", max_age=604800, path="/")
     return response
 
@@ -253,9 +254,10 @@ async def login(user_data: UserLogin):
         "name": user["name"],
         "phone": user.get("phone", ""),
         "role": user["role"],
-        "created_at": user.get("created_at", "")
+        "created_at": user.get("created_at", ""),
+        "access_token": access_token
     })
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none", max_age=3600, path="/")
+    
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, secure=True, samesite="none", max_age=604800, path="/")
     return response
 
@@ -289,7 +291,7 @@ async def refresh_token(request: Request):
         access_token = create_access_token(user_id, user["email"], user["role"])
         
         response = JSONResponse(content={"message": "Token refreshed"})
-        response.set_cookie(key="access_token", value=access_token, httponly=True, secure=True, samesite="none", max_age=3600, path="/")
+        
         return response
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
