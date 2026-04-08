@@ -40,6 +40,10 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const checkAuth = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
     try {
       const { data } = await axios.get(`${API}/auth/me`, { withCredentials: true });
       setUser(data);
@@ -56,17 +60,27 @@ const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const { data } = await axios.post(`${API}/auth/login`, { email, password }, { withCredentials: true });
+    if (data.access_token) {
+      localStorage.setItem('token', data.access_token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
+    }
     setUser(data);
     return data;
   };
 
   const register = async (userData) => {
     const { data } = await axios.post(`${API}/auth/register`, userData, { withCredentials: true });
+    if (data.access_token) {
+      localStorage.setItem('token', data.access_token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
+    }
     setUser(data);
     return data;
   };
 
   const logout = async () => {
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
     await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
     setUser(false);
   };
