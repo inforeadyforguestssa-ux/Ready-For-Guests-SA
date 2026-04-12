@@ -1,26 +1,21 @@
 {
   "short_name": "Ready for Guests",
   "name": "Ready for Guests Property Services",
-  "description": "Complete care for your holiday home on the Hibiscus Coast. Professional cleaning, fresh air property care, and guest-ready setup services.",
   "icons": [
     {
       "src": "icon-192.png",
-      "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
-      "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ],
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#0D7377",
   "background_color": "#FAFAF7",
-  "orientation": "portrait-primary",
-  "scope": "/",
-  "categories": ["business", "lifestyle", "productivity"]
+  "orientation": "portrait"
 }
