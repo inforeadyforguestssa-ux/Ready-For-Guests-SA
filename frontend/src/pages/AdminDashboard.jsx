@@ -190,7 +190,8 @@ const AdminDashboard = () => {
               { id: 'bookings', label: 'Bookings', icon: CalendarBlank },
               { id: 'teams', label: 'Teams', icon: Users },
               { id: 'clients', label: 'Clients', icon: User },
-              { id: 'gallery', label: 'Gallery', icon: Image }
+              { id: 'team-leaders', label: 'Team Leaders', icon: UserPlus },
+{ id: 'gallery', label: 'Gallery', icon: Image }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -441,11 +442,10 @@ const AdminDashboard = () => {
                 />
               </label>
             </div>
-            
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {gallery.map(image => (
                 <div key={image.id} className="relative aspect-square rounded-2xl overflow-hidden group">
-                  <img 
+                  <img
                     src={image.url || `${API}/gallery/${image.id}/download`}
                     alt={image.title}
                     className="w-full h-full object-cover"
