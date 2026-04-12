@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   House, ArrowLeft, CalendarBlank, Clock, MapPin, 
-  ArrowRight, CheckCircle, SprayBottle, CurrencyDollar
+  ArrowRight, CheckCircle, SprayBottle, Money
 } from '@phosphor-icons/react';
 import axios from 'axios';
 import { API, useAuth } from '../App';
@@ -287,7 +287,7 @@ const BookingPage = () => {
                     {selectedTime}
                   </span>
                   <span className="flex items-center gap-1">
-                    <CurrencyDollar size={16} />
+                    <Money size={16} />
                     R{selectedService?.price_min} - R{selectedService?.price_max}
                   </span>
                 </div>
