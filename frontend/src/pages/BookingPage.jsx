@@ -72,8 +72,7 @@ const BookingPage = () => {
         special_requests: formData.special_requests
       };
 
-      await axios.post(`${API}/bookings`, bookingData, { withCredentials: true });
-      toast.success('Booking created successfully!');
+      await axios.post(`${API}/bookings`, bookingData);toast.success('Booking created successfully!');
       navigate('/client');
     } catch (err) {
       toast.error('Failed to create booking');
