@@ -274,6 +274,28 @@ async def get_me(request: Request):
     user = await get_current_user(request)
     return user
 
+@api_router.put("/admin/users/{user_id}/approve")
+async def approve_team_leader(request: Request, user_id: str):
+    await require_role(request, ["admin"])
+    result = await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"is_approved": True}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": "Team leader approved"}
+
+@api_router.put("/admin/users/{user_id}/reject")
+async def reject_team_leader(request: Request, user_id: str):
+    await require_role(request, ["admin"])
+    result = await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"is_approved": False, "is_active": False}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": "Team leader rejected"}
+
 @api_router.post("/auth/refresh")
 async def refresh_token(request: Request):
     token = request.cookies.get("refresh_token")
@@ -757,9 +779,11 @@ async def get_admin_stats(request: Request):
 @api_router.get("/admin/users")
 async def get_all_users(request: Request):
     await require_role(request, ["admin"])
-    users = await db.users.find({}, {"_id": 0, "password_hash": 0}).to_list(500)
+    users = []
+    async for u in db.users.find({}, {"password_hash": 0}):
+        u["id"] = str(u.pop("_id"))
+        users.append(u)
     return users
-
 # ============= PAYFAST INTEGRATION =============
 PAYFAST_SIGNATURE_FIELD_ORDER = [
     "merchant_id", "merchant_key", "return_url", "cancel_url", "notify_url",
