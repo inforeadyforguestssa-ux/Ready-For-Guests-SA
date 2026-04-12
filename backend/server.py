@@ -213,6 +213,7 @@ async def register(user_data: UserRegister):
         "name": user_data.name,
         "phone": user_data.phone,
         "role": user_data.role if user_data.role in ["client", "team"] else "client",
+        "is_approved": True if user_data.role != "team" else False,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "is_active": True
     }

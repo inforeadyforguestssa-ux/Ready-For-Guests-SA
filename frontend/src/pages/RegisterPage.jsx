@@ -176,7 +176,7 @@ const RegisterPage = () => {
                   className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#E5E0D8] bg-white focus:ring-2 focus:ring-[#0D7377]/20 focus:border-[#0D7377] outline-none transition-all appearance-none"
                 >
                   <option value="client">Property Owner / Client</option>
-                  <option value="team">Cleaning Team Member</option>
+                  <option value="team">Team Leader</option>
                 </select>
               </div>
             </div>
