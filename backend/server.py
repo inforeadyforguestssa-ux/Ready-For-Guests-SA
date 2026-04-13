@@ -259,7 +259,9 @@ def send_reset_email(to_email: str, reset_link: str):
     </body></html>
     """
     msg.attach(MIMEText(body, 'html'))
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as server:
+        server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+        server.send_message(msg)
         server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
         server.send_message(msg)
 
@@ -276,7 +278,7 @@ async def forgot_password(request: Request):
         try:
             send_reset_email(email, reset_link)
         except Exception as e:
-            print(f"Email error: {e}")
+            print(f"Email error: {type(e).__name__}: {e}")
     return {"message": "If an account exists, a reset link has been sent."}
 
 @api_router.post("/auth/reset-password")
