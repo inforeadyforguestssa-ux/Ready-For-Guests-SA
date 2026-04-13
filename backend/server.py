@@ -260,8 +260,7 @@ def send_reset_email(to_email: str, reset_link: str):
         <p style='color:#4A6B6C;font-size:13px;'>This link expires in 1 hour.</p>
         </div>
     """, 'html'))
-    with smtplib.SMTP("smtp-relay.brevo.com", 587) as server:
-        server.starttls()
+    with smtplib.SMTP_SSL("smtp-relay.brevo.com", 465) as server:
         server.login(os.environ.get("BREVO_SMTP_LOGIN"), os.environ.get("BREVO_SMTP_PASSWORD"))
         server.send_message(msg)
 
