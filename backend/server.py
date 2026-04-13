@@ -245,24 +245,22 @@ GMAIL_USER = os.environ.get("GMAIL_USER")
 GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
 
 def send_reset_email(to_email: str, reset_link: str):
-    import smtplib
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    msg = MIMEMultipart()
-    msg['From'] = os.environ.get("BREVO_SMTP_LOGIN")
-    msg['To'] = to_email
-    msg['Subject'] = "Reset Your Password - Ready for Guests"
-    msg.attach(MIMEText(f"""
-        <div style='font-family:Arial,sans-serif;color:#0A2A2B;'>
-        <h2 style='color:#0D7377;'>Reset Your Password</h2>
-        <p>Click below to set a new password.</p>
-        <a href='{reset_link}' style='display:inline-block;padding:12px 24px;background:#0D7377;color:white;text-decoration:none;border-radius:8px;margin:16px 0;'>Reset Password</a>
-        <p style='color:#4A6B6C;font-size:13px;'>This link expires in 1 hour.</p>
-        </div>
-    """, 'html'))
-    with smtplib.SMTP_SSL("smtp-relay.brevo.com", 465) as server:
-        server.login(os.environ.get("BREVO_SMTP_LOGIN"), os.environ.get("BREVO_SMTP_PASSWORD"))
-        server.send_message(msg)
+    import requests as http_requests
+    response = http_requests.post(
+        "https://api.brevo.com/v3/smtp/email",
+        headers={
+            "api-key": os.environ.get("BREVO_API_KEY"),
+            "Content-Type": "application/json"
+        },
+        json={
+            "sender": {"name": "Ready for Guests", "email": os.environ.get("BREVO_SMTP_LOGIN")},
+            "to": [{"email": to_email}],
+            "subject": "Reset Your Password - Ready for Guests",
+            "htmlContent": f"<div style='font-family:Arial,sans-serif;color:#0A2A2B;'><h2 style='color:#0D7377;'>Reset Your Password</h2><p>Click below to set a new password.</p><a href='{reset_link}' style='display:inline-block;padding:12px 24px;background:#0D7377;color:white;text-decoration:none;border-radius:8px;margin:16px 0;'>Reset Password</a><p style='color:#4A6B6C;font-size:13px;'>This link expires in 1 hour.</p></div>"
+        }
+    )
+    if response.status_code not in [200, 201]:
+        raise Exception(f"Brevo API error: {response.text}")
 
 @api_router.post("/auth/forgot-password")
 async def forgot_password(request: Request):
