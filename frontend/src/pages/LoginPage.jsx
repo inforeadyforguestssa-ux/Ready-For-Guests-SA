@@ -120,7 +120,6 @@ const LoginPage = () => {
                   placeholder="••••••••"
                   required
                 />
-                <div className="text-right -mt-4"><Link to="/forgot-password" className="text-sm text-[#0D7377] hover:underline">Forgot password?</Link></div>
             <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
