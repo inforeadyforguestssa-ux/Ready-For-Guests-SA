@@ -120,7 +120,8 @@ const LoginPage = () => {
                   placeholder="••••••••"
                   required
                 />
-                <button
+                <div className="text-right -mt-4"><Link to="/forgot-password" className="text-sm text-[#0D7377] hover:underline">Forgot password?</Link></div>
+            <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4A6B6C] hover:text-[#0D7377]"
@@ -130,6 +131,7 @@ const LoginPage = () => {
               </div>
             </div>
 
+            <div className="text-right -mt-4"><Link to="/forgot-password" className="text-sm text-[#0D7377] hover:underline">Forgot password?</Link></div>
             <button
               data-testid="login-submit-btn"
               type="submit"
