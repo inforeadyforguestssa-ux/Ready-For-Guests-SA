@@ -237,6 +237,60 @@ async def register(user_data: UserRegister):
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, secure=True, samesite="none", max_age=604800, path="/")
     return response
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+GMAIL_USER = os.environ.get("GMAIL_USER")
+GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
+
+def send_reset_email(to_email: str, reset_link: str):
+    msg = MIMEMultipart()
+    msg['From'] = GMAIL_USER
+    msg['To'] = to_email
+    msg['Subject'] = "Reset Your Password - Ready for Guests"
+    body = f"""
+    <html><body style="font-family: Arial, sans-serif; color: #0A2A2B;">
+    <h2 style="color: #0D7377;">Reset Your Password</h2>
+    <p>We received a request to reset your password. Click the button below to set a new one.</p>
+    <a href="{reset_link}" style="display:inline-block;padding:12px 24px;background:#0D7377;color:white;text-decoration:none;border-radius:8px;margin:16px 0;">Reset Password</a>
+    <p style="color:#4A6B6C;font-size:13px;">This link expires in 1 hour. If you didn't request this, ignore this email.</p>
+    <p style="color:#4A6B6C;font-size:13px;">— Ready for Guests Property Services</p>
+    </body></html>
+    """
+    msg.attach(MIMEText(body, 'html'))
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+        server.send_message(msg)
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(request: Request):
+    body = await request.json()
+    email = body.get("email", "").lower()
+    user = await db.users.find_one({"email": email})
+    if user:
+        token = str(uuid.uuid4())
+        expires = datetime.now(timezone.utc).timestamp() + 3600
+        await db.password_resets.insert_one({"email": email, "token": token, "expires": expires})
+        reset_link = f"{os.environ.get('FRONTEND_URL')}/reset-password?token={token}"
+        try:
+            send_reset_email(email, reset_link)
+        except Exception as e:
+            print(f"Email error: {e}")
+    return {"message": "If an account exists, a reset link has been sent."}
+
+@api_router.post("/auth/reset-password")
+async def reset_password(request: Request):
+    body = await request.json()
+    token = body.get("token")
+    new_password = body.get("password")
+    record = await db.password_resets.find_one({"token": token})
+    if not record or record["expires"] < datetime.now(timezone.utc).timestamp():
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
+    await db.users.update_one({"email": record["email"]}, {"$set": {"password_hash": hash_password(new_password)}})
+    await db.password_resets.delete_one({"token": token})
+    return {"message": "Password updated successfully"}
+
 @api_router.post("/auth/login")
 async def login(user_data: UserLogin):
     email = user_data.email.lower()
