@@ -245,25 +245,14 @@ GMAIL_USER = os.environ.get("GMAIL_USER")
 GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
 
 def send_reset_email(to_email: str, reset_link: str):
-    msg = MIMEMultipart()
-    msg['From'] = GMAIL_USER
-    msg['To'] = to_email
-    msg['Subject'] = "Reset Your Password - Ready for Guests"
-    body = f"""
-    <html><body style="font-family: Arial, sans-serif; color: #0A2A2B;">
-    <h2 style="color: #0D7377;">Reset Your Password</h2>
-    <p>We received a request to reset your password. Click the button below to set a new one.</p>
-    <a href="{reset_link}" style="display:inline-block;padding:12px 24px;background:#0D7377;color:white;text-decoration:none;border-radius:8px;margin:16px 0;">Reset Password</a>
-    <p style="color:#4A6B6C;font-size:13px;">This link expires in 1 hour. If you didn't request this, ignore this email.</p>
-    <p style="color:#4A6B6C;font-size:13px;">— Ready for Guests Property Services</p>
-    </body></html>
-    """
-    msg.attach(MIMEText(body, 'html'))
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as server:
-        server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
-        server.send_message(msg)
-        server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
-        server.send_message(msg)
+    import resend
+    resend.api_key = os.environ.get("RESEND_API_KEY")
+    resend.Emails.send({
+        "from": "Ready for Guests <onboarding@resend.dev>",
+        "to": to_email,
+        "subject": "Reset Your Password - Ready for Guests",
+        "html": f"<div style='font-family:Arial,sans-serif;color:#0A2A2B;'><h2 style='color:#0D7377;'>Reset Your Password</h2><p>Click below to set a new password.</p><a href='{reset_link}' style='display:inline-block;padding:12px 24px;background:#0D7377;color:white;text-decoration:none;border-radius:8px;margin:16px 0;'>Reset Password</a><p style='color:#4A6B6C;font-size:13px;'>This link expires in 1 hour.</p></div>"
+    })
 
 @api_router.post("/auth/forgot-password")
 async def forgot_password(request: Request):
